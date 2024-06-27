@@ -4,6 +4,7 @@ import MainFooter from "./shared/components/Navigation/MainFooter";
 import NotFoundPage from "./shared/pages/NotFoundPage";
 import HomePage from "./shared/pages/HomePage";
 import AboutPage from "./shared/pages/AboutPage";
+import AdminLoginPage from "./admin/AdminLoginPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/adminLogin" element={<AdminLoginPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>

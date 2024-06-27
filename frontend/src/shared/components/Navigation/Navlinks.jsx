@@ -7,7 +7,8 @@ const Navlinks = () => {
     return (
         <Nav className="ms-auto">
             <Nav.Link as={NavLink} to={"/"}>Home</Nav.Link>
-            <Nav.Link as={NavLink} to={"/login"}>Login</Nav.Link>
+            <Nav.Link as={NavLink} to={"/userLogin"}>User Login</Nav.Link>
+            <Nav.Link as={NavLink} to={"/adminLogin"}>Admin Login</Nav.Link>
             <Nav.Link as={NavLink} to={"/about"}>About</Nav.Link>
         </Nav>
     )
