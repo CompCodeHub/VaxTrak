@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const appointmentSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     hospital: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Hospital",
@@ -13,11 +13,10 @@ const appointmentSchema = new mongoose.Schema(
       ref: "Vaccine",
       required: true,
     },
-    scheduledDate: { type: Date, required: true },
+    slot: { type: Date, required: true },
     status: {
       type: String,
-      enum: ["Scheduled", "Completed", "Cancelled"],
-      default: "Scheduled",
+      enum: ["Scheduled", "Completed", "Cancelled", "Available"],
     },
     chargesPaid: { type: Boolean, default: false },
   },

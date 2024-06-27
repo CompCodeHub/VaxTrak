@@ -7,6 +7,7 @@ const hospitalSchema = new mongoose.Schema(
     type: { type: String, enum: ["Government", "Private"], required: true },
     charges: { type: Number, required: true },
     admins: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Admin' }],
+    vaccines: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Vaccine' }]
   },
   { versionKey: false }
 );
