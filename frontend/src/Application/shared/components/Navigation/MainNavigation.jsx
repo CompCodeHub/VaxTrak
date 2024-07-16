@@ -7,7 +7,7 @@ const MainNavigation = () => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="navbar-static-top">
       <Container>
-        <Navbar.Brand as={Link} to={"/"}>
+        <Navbar.Brand as={Link} to={"/"} className="text-lg-start">
           VaxTrak
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

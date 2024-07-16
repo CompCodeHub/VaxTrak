@@ -7,7 +7,20 @@ const hospitalSchema = new mongoose.Schema(
     type: { type: String, enum: ["Government", "Private"], required: true },
     charges: { type: Number, required: true },
     admins: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Admin' }],
-    vaccines: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Vaccine' }]
+    vaccines: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Vaccine' }],
+    openingTime: { type: String, required: true },
+    closingTime: { type: String, required: true },
+    image: {
+      publicId: {
+        type: String,
+        required: true,
+      },
+      url: {
+        type: String,
+        required: true,
+      },
+    },
+    contact: { type: String, required: true }, 
   },
   { versionKey: false }
 );

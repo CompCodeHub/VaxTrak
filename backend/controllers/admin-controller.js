@@ -7,7 +7,7 @@ const loginAdmin = async (req, res) => {
 
   try {
     // Login admin
-    const admin = await Admin.login(email, password, res);
+    const admin = await Admin.login(email, password);
 
     // Generate token
     generateToken(res, admin._id);

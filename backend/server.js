@@ -7,17 +7,25 @@ const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/user-routes");
 const hospitalRoutes = require("./routes/hospital-routes");
 const vaccineRoutes = require("./routes/vaccine-routes");
+const adminRoutes = require("./routes/admin-routes");
+const appointmentRoutes = require("./routes/appointment-routes");
+const reportRoutes = require("./routes/report-routes");
+
 
 // middleware
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(cookieParser());
 
 // routes
 app.use("/api/users", userRoutes);
 app.use("/api/hospitals", hospitalRoutes);
 app.use("/api/vaccines", vaccineRoutes);
+app.use("/api/admins", adminRoutes);
+app.use("/api/appointments", appointmentRoutes);
+app.use("/api/reports", reportRoutes);
+
 
 //Handles unknown routes
 app.use((req, res, next) => {

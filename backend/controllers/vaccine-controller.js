@@ -11,18 +11,24 @@ const getAllVaccines = async (req, res) => {
 
 const createVaccine = async (req, res) => {
   try {
-    const { name, description, sideEffects, origin, dosesRequired } = req.body;
+    const { name, description, sideEffects, company, dosesRequired } = req.body;
 
     // Validate input data
-    if (!name || !description || !sideEffects || !origin || !dosesRequired) {
+    if (!name || !description || !sideEffects || !company || !dosesRequired) {
       return res.status(400).json({ error: "Invalid input data" });
     }
 
     // Create vaccine
-    const vaccine = new Vaccine({ name, description });
+    const vaccine = new Vaccine({
+      name,
+      description,
+      company,
+      sideEffects,
+      dosesRequired,
+    });
     await vaccine.save();
 
-    return res.status(201).json({ vaccine });
+    return res.status(201).json({ message: "Vaccine registered successfully", vaccine });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

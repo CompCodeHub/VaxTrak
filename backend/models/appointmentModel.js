@@ -13,12 +13,15 @@ const appointmentSchema = new mongoose.Schema(
       ref: "Vaccine",
       required: true,
     },
-    slot: { type: Date, required: true },
+    date: { type: Date, required: true },
+    time: { type: String, required: true },
     status: {
       type: String,
-      enum: ["Scheduled", "Completed", "Cancelled", "Available"],
+      enum: ["Scheduled", "Confirmed", "Completed", "Cancelled"],
+      default: "Scheduled",
     },
-    chargesPaid: { type: Boolean, default: false },
+    charges: { type: Number, required: true },
+    paid: { type: Boolean, default: false },
   },
   { versionKey: false }
 );

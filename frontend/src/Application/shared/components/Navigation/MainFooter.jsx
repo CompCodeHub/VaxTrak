@@ -7,7 +7,7 @@ const MainFooter = () => {
       <Container>
         <Row>
           <Col className="text-center py-3 text-muted">
-            Copyright &copy; 2024 VaxTrak Pro. All rights reserved.
+            Copyright &copy; 2024 VaxTrak. All rights reserved.
           </Col>
         </Row>
       </Container>

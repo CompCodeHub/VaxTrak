@@ -1,5 +1,9 @@
 const User = require("../models/userModel");
+const Appointment = require("../models/appointmentModel");
 const { generateToken } = require("../utils/tokenGenerator");
+const pdf = require("pdf-creator-node");
+const fs = require("fs");
+const path = require("path");
 
 const signupUser = async (req, res) => {
   // Extract details from user body
@@ -15,7 +19,7 @@ const signupUser = async (req, res) => {
     contact,
     address,
     gender,
-    exitingMedicalConditions,
+    existingMedicalConditions,
   } = req.body;
 
   try {
@@ -32,7 +36,7 @@ const signupUser = async (req, res) => {
       contact,
       address,
       gender,
-      exitingMedicalConditions,
+      existingMedicalConditions,
       res
     );
 
@@ -52,7 +56,7 @@ const signupUser = async (req, res) => {
       contact: user.contact,
       address: user.address,
       gender: user.gender,
-      exitingMedicalConditions: user.exitingMedicalConditions,
+      existingMedicalConditions: user.existingMedicalConditions,
     };
 
     return res
@@ -114,9 +118,69 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+// Read html template for vaccination report
+const html = fs.readFileSync(
+  path.join(__dirname, "../utils/reportTemplate.html"),
+  "utf8"
+);
+const options = {
+  format: "A4",
+  orientation: "landscape",
+  border: "10mm",
+};
+
+const getVaccinationReport = async (req, res) => {
+  // Get user from auth middleware
+  const user = req.user;
+
+  try {
+
+    const appointments = await Appointment.find({
+      user: user._id,
+      status: "Completed",
+    }).populate("hospital vaccine");
+
+    // Create needed objects
+    const vaccines = appointments.map((appointment) => ({
+      name: appointment.vaccine.name,
+      company: appointment.vaccine.company,
+      hospital: appointment.hospital.name,
+      date: appointment.date.toISOString().split("T")[0],
+      time: appointment.time,
+    }));
+
+    // create vaccination data object
+    const vaccinationData = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      dob: user.dob.toISOString().split("T")[0],
+      age: user.age,
+      gender: user.gender,
+      bloodGroup: user.bloodGroup,
+      vaccines,
+    };
+
+    const document = {
+      html: html,
+      data: vaccinationData,
+      path: path.join(
+        __dirname,
+        `../reports/${user.firstName}_${user.lastName}_vaccination_report.pdf`
+      ),
+    };
+
+    const report = await pdf.create(document, options);
+
+    return res.status(200).download(report.filename);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   signupUser,
   loginUser,
   logoutUser,
   getAllUsers,
+  getVaccinationReport,
 };

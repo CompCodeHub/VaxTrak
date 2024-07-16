@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema(
     contact: { type: String, required: true },
     address: { type: String, required: true },
     gender: { type: String, required: true },
-    exitingMedicalConditions: { type: [String] },
+    existingMedicalConditions: { type: [String] },
     medicalCertificate: { type: String },
   },
   { versionKey: false }
@@ -34,8 +34,7 @@ userSchema.statics.signup = async function (
   contact,
   address,
   gender,
-  exitingMedicalConditions,
-  res
+  existingMedicalConditions,
 ) {
   // Validation
   if (
@@ -56,7 +55,7 @@ userSchema.statics.signup = async function (
 
   // Check if valid email
   if (!validator.isEmail(email)) {
-    return res.status(400).json({ error: "Invalid email!" });
+    throw Error("Invalid email!");
   }
 
   // Check if valid password (Uncomment before going to production)
@@ -67,23 +66,23 @@ userSchema.statics.signup = async function (
   // Check if user exists
   const duplicateEmail = await this.findOne({ email });
   if (duplicateEmail) {
-    return res.status(400).json({ error: "Email already in use!" });
+    throw Error("Email already in use!");
   }
 
   // Validate date of birth
   if (!validator.isDate(dob)) {
-    return res.status(400).json({ error: "Invalid date of birth!" });
+    throw Error("Invalid date of birth!");
   }
 
   // Ensure date of birth is before the current date
   if (!validator.isBefore(dob, new Date().toISOString())) {
-    return res.status(400).json({ error: "Invalid date of birth!" });
+    throw Error("Invalid date of birth!");
   }
 
   // Check for duplicate contact
   const duplicateContact = await this.findOne({ contact });
   if (duplicateContact) {
-    return res.status(400).json({ error: "Contact already in use!" });
+    throw Error("Contact already in use!");
   }
 
   // Generate bcrypt salt and hash
@@ -103,7 +102,7 @@ userSchema.statics.signup = async function (
     contact,
     address,
     gender,
-    exitingMedicalConditions,
+    existingMedicalConditions,
   });
   return user;
 };
@@ -119,16 +118,14 @@ userSchema.statics.login = async function (email, password, res) {
   const user = await this.findOne({ email });
 
   if (!user) {
-    return res
-      .status(400)
-      .json({ error: "Account with given email doesn't exist!" });
+    throw Error("Account with given email doesn't exist!");
   }
 
   // Compare passwords
   const match = await bcrypt.compare(password, user.password);
 
   if (!match) {
-    return res.status(400).json({ error: "Incorrect password!" });
+    throw Error("Incorrect password!");
   }
 
   return user;

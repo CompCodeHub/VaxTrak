@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vaccination Report</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .report-card {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="report-card card p-4 me-5">
+            <h1 class="text-dark text-center">
+              <strong>Vaccination Report</strong>
+            </h1>
+            <h3>Patient Information:</h3>
+            <hr />
+            <p><strong>Name: </strong> {{firstName}} {{lastName}}</p>
+            <p><strong>Date of Birth:</strong> {{dob}}</p>
+            <p><strong>Age:</strong> {{age}}</p>
+            <p><strong>Gender:</strong> {{gender}}</p>
+            <p><strong>Blood Group:</strong> {{bloodGroup}}</p>
+            <h4 class="mt-4">Vaccination History:</h4>
+            <ul class="list-group list-group-flush">
+              {{#each vaccines}}
+              <li class="list-group-item">
+                <strong>Vaccine:</strong> {{this.name}} <br />
+                <strong>Company:</strong> {{this.company}} <br />
+                <strong>Hospital:</strong> {{this.hospital}} <br />
+                <strong>Date:</strong> {{this.date}} <br />
+                <strong>Time:</strong> {{this.time}}
+              </li>
+              {{/each}}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

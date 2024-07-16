@@ -22,30 +22,27 @@ adminSchema.statics.signup = async function (
   lastName,
   email,
   password,
-  hospital,
-  res
+  hospital
 ) {
   // Check for all fields
   if (!firstName || !lastName || !email || !password || !hospital) {
-    return res.status(400).json({ error: "All fields must be filled" });
+    throw Error("All fields must be filled");
   }
 
   // Check for valid email
   if (!validator.isEmail(email)) {
-    return res.status(400).json({ error: "Invalid email" });
+    throw Error("Invalid email");
   }
 
   // Check for strong password (Uncomment in production)
   // if(!validator.isStrongPassword(password)){
-  //   return res.status(400).json({ error: "Password is not strong enough" });
+  //   throw Error("Password is not strong enough");
   // }
 
   // Check for duplicate email
   const exists = await this.findOne({ email });
   if (exists) {
-    return res
-      .status(400)
-      .json({ error: "Admin email is already registered for other hospital!" });
+      throw Error("Admin email is already registered for other hospital!");
   }
 
   const salt = await bcrypt.genSalt(10);
@@ -62,7 +59,7 @@ adminSchema.statics.signup = async function (
   return admin;
 };
 
-adminSchema.statics.login = async function (email, password, res) {
+adminSchema.statics.login = async function (email, password) {
   // Check for all fields
   if (!email || !password) {
     throw Error("All fields must be filled");
@@ -71,15 +68,13 @@ adminSchema.statics.login = async function (email, password, res) {
   // Check email
   const admin = await this.findOne({ email });
   if (!admin) {
-    return res
-      .status(400)
-      .json({ error: "Admin account with given email doesn't exist!" });
+    throw Error("Admin account with given email doesn't exist!");
   }
 
   // Check password
   const match = await bcrypt.compare(password, admin.password);
   if (!match) {
-    return res.status(400).json({ error: "Incorrect password" });
+    throw Error("Incorrect password!");
   }
 
   return admin;

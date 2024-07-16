@@ -42,7 +42,7 @@ const adminAuth = async (req, res, next) => {
     }
 
     // Check if hospital for the admin exists
-    const hospital = await Hospital.findOne({ _id: admin.hospital});
+    const hospital = await Hospital.findOne({ _id: admin.hospital });
     if (!hospital) {
       return res.status(401).json({ error: "Unauthorized request!" });
     }
@@ -52,8 +52,9 @@ const adminAuth = async (req, res, next) => {
       return res.status(401).json({ error: "Unauthorized request!" });
     }
 
-    // Attach admin info for further requests
+    // Attach admin info and hospital info for further requests
     req.admin = admin;
+    req.hospital = hospital;
 
     next();
   } catch (error) {
@@ -61,4 +62,4 @@ const adminAuth = async (req, res, next) => {
   }
 };
 
-module.exports = { userAuth };
+module.exports = { userAuth, adminAuth };
